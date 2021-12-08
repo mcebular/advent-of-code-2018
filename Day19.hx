@@ -19,7 +19,16 @@ class Day19 {
         var register = new Register([1,0,0,0,0,0], ptr);
         while(register.getPointerValue() < instructions.length) {
             var instr = instructions[register.getPointerValue()];
-            // trace(register.getPointerValue() + "," + instr);
+            trace(register, register.getPointerValue() + "," + instr);
+
+            // Stopping allows analyzing of what the program is doing.
+            var line = Sys.stdin().readLine();
+            if (line.length > 0) {
+                // Allow direct memory modification if given an input.
+                var reg = Std.parseInt(line);
+                var val = Std.parseInt(Sys.stdin().readLine());
+                register.memory[reg] = val;
+            }
 
             var op = Reflect.field(register, instr.operation);
             Reflect.callMethod(register, op, instr.registers);
@@ -33,6 +42,12 @@ class Day19 {
         trace(register);
 
     }
+
+    // pt 2
+    // Analysis show that for the given input, it calculates a sum of all
+    // divisors of the number that ends up registry position 1 before entering
+    // the loop somewhere between program lines 3 and 11.
+    // Solution is sum of divisors of 10551343, which is 11534976.
 
 }
 
